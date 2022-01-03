@@ -1,0 +1,21 @@
+name: Terraform plan comment on pull request
+on:
+  pull_request:
+    types: 
+      - opened
+    paths: '*/deploy'
+jobs:
+  tf-plan-comment:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Terraform plan comment
+      uses: actions/github-script@v2
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          github.issues.createComment({
+            issue_number: ${{ github.event.number }},
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: 'Placeholder for Terraform Plan'
+          })
