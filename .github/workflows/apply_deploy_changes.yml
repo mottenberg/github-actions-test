@@ -3,21 +3,22 @@ on:
   schedule:
     - cron: '* * * * *'
   workflow_dispatch: 
-    inputs:
-      skip_commit_check:
-        description: Whether to skip if a commit has occurred within the last 24 hours
-        type: boolean
-        required: false
-        default: true
 jobs:
-  chek:
-    runs-on: 'ubuntu-latest'
+  should_run_check:
+    runs-on: ubuntu-latest
+    name: Check if deploy should run
+    outputs:
+      should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
-      - name: Set the ENV variables
-        env:
-          SKIP_COMMIT_CHECK_DEFAULT: false
-        run: echo "SKIP_COMMIT_CHECK=${{ github.event.inputs.skip_commit_check || env.SKIP_COMMIT_CHECK_DEFAULT }}" >> $GITHUB_ENV
-
-      - name: Print ENV variable
-        run: echo "$SKIP_COMMIT_CHECK"
-
+      - name: Check commits within last 24 hours
+        if: ${{ github.event_name == 'schedule' }}
+        run: test -z $(git rev-list  --after="24 hours"  ${{ github.sha }}) && echo "::set-output name=should_run::false"
+      - name: Set should run output to true for manual trigger
+  deploy:
+    needs: should_run_check
+    if: ${{ needs.should_run_check.outputs.should_run != 'false' }}
+    runs-on: ubuntu-latest
+    name: deploy terraform changes
+    steps:
+      - name: Echo test message
+        run: echo "Deploying Terraform changes"
