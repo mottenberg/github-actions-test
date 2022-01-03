@@ -3,7 +3,8 @@ on:
   pull_request:
     types: 
       - opened
-    paths: 'deploy/**'
+    paths: 
+    - 'deploy/**'
 jobs:
   tf-plan-comment:
     runs-on: ubuntu-latest
