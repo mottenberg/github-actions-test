@@ -1,2 +1,2 @@
 # github-actions-test
-Github actions test project
+Github actions test repo
