@@ -1,23 +1,23 @@
-name: Print some text every 3rd minute
+name: Deploy test with scheduled and manual trigger
 on:
   schedule:
-    - cron: '1/3 * * * *'
+    - cron: '* * * * *'
   workflow_dispatch: 
     inputs:
       skip_commit_check:
         description: Whether to skip if a commit has occurred within the last 24 hours
         type: boolean
         required: false
-        default: false
+        default: true
 jobs:
   chek:
-    runs-on: 'ubuntu-20.04'
+    runs-on: 'ubuntu-latest'
     steps:
       - name: Set the ENV variables
         env:
           SKIP_COMMIT_CHECK_DEFAULT: false
         run: echo "SKIP_COMMIT_CHECK=${{ github.event.inputs.skip_commit_check || env.SKIP_COMMIT_CHECK_DEFAULT }}" >> $GITHUB_ENV
 
-      - name: Print some text
+      - name: Print ENV variable
         run: echo "$SKIP_COMMIT_CHECK"
 
