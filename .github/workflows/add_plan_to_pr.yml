@@ -1,4 +1,4 @@
-name: Terraform plan comment on pull request
+name: Add Terraform plan output to pull request
 on:
   pull_request:
     types: 
@@ -11,7 +11,7 @@ jobs:
   tf-plan-comment:
     runs-on: ubuntu-latest
     steps:
-    - name: Terraform plan comment
+    - name: Add Terraform plan comment
       uses: actions/github-script@v2
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
