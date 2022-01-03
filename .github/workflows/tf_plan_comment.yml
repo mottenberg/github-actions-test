@@ -3,8 +3,10 @@ on:
   pull_request:
     types: 
       - opened
+    branches:
+      - main
     paths: 
-    - 'deploy/**'
+      - 'deploy/**'
 jobs:
   tf-plan-comment:
     runs-on: ubuntu-latest
