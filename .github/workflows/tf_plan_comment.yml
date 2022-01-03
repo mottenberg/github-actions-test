@@ -1,10 +1,10 @@
-name: Terraform plan comment on pull request
+name: Add Terraform plan comment to pull request
 on:
   pull_request:
     types: 
       - opened
     paths: 
-    - 'deploy/**'
+      - 'deploy/**'
 jobs:
   tf-plan-comment:
     runs-on: ubuntu-latest
