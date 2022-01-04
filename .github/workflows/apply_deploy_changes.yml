@@ -11,7 +11,6 @@ jobs:
       should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
       - name: Check commits within last 24 hours
-      - uses: actions/checkout@v2
         if: ${{ github.event_name == 'schedule' }}
         run: test $(git log main --after="24 hours" --format=oneline -i -- deploy | wc -l) -eq 0 && echo "::set-output name=should_run::false"
   deploy:
