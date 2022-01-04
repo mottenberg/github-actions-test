@@ -10,6 +10,7 @@ jobs:
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
+      - id: should_run
       - name: Check commits within last 24 hours
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: test $(git log --since="24 hours ago" --format=oneline -i -- deploy | wc -l) -eq 1 && echo "::set-output name=should_run::false"
