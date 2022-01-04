@@ -5,11 +5,11 @@ on:
   workflow_dispatch: 
 jobs:
   should_run:
-    if: ${{ github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
     name: Check if deploy should run
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
+    if: ${{ github.event_name == 'schedule' }}
     steps:
       - uses: actions/checkout@v2
       - name: Check commits within last 24 hours
