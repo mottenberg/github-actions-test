@@ -1,7 +1,7 @@
 name: Deploy test with scheduled and manual trigger
 on:
   schedule:
-     - cron: '0 20 * * *'
+     - cron: '0 03 * * *'
   workflow_dispatch: 
 jobs:
   should_run:
