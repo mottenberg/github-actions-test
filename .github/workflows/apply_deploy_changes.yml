@@ -1,7 +1,7 @@
 name: Deploy test with scheduled and manual trigger
 on:
-  # schedule:
-  #   - cron: '* * * * *'
+  schedule:
+     - cron: '0 20 * * *'
   workflow_dispatch: 
 jobs:
   should_run:
@@ -13,8 +13,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Check commits within last 24 hours
         id: should_run
-        if: ${{ github.event_name == 'workflow_dispatch' }}
-        run: test $(git log --since="24 hours ago" --format=oneline -i -- deploy | wc -l) -eq 1 && echo "::set-output name=should_run::false"
+        if: ${{ github.event_name == 'schedule' }}
+        run: test $(git log --since="24 hours ago" --format=oneline -i -- deploy | wc -l) -eq 0 && echo "::set-output name=should_run::false"
   deploy:
     needs: should_run
     if: ${{ needs.should_run.outputs.should_run != 'false' }}
