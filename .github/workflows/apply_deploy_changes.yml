@@ -10,6 +10,7 @@ jobs:
     outputs:
       should_run: ${{ steps.should_run.outputs.should_run }}
     steps:
+      - uses: actions/checkout@v2
       - name: Check commits within last 24 hours
         id: should_run
         if: ${{ github.event_name == 'workflow_dispatch' }}
