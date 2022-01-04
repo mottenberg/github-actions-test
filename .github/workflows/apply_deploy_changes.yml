@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Check if deploy should run
     outputs:
-      should_run: ${{ steps.should_run.outputs.should_run }}
-    if: ${{ github.event_name == 'schedule' }}
+      should_run: ${{ steps.should_run.outputs.should_run }} 
     steps:
       - uses: actions/checkout@v2
       - name: Check commits within last 24 hours
+        if: ${{ github.event_name == 'schedule' }}
         id: should_run
         run: test $(git log --since="24 hours ago" --format=oneline -i -- deploy | wc -l) -eq 0 && echo "::set-output name=should_run::false"
   deploy:
@@ -24,3 +24,4 @@ jobs:
       - name: Echo test message
         run: |
           echo "Deploying Terraform changes"
+          echo ${{ needs.should_run.outputs.should_run }}
